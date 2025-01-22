@@ -1,0 +1,10 @@
+Flask
+fastapi
+uvicorn
+openai
+pinecone-client
+numpy
+pandas
+scikit-learn
+python-dotenv
+requests

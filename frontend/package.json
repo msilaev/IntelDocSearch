@@ -1,0 +1,35 @@
+{
+  "name": "intelligent-document-search",
+  "version": "1.0.0",
+  "description": "An AI-powered tool for intelligent document search and summarization.",
+  "main": "src/index.tsx",
+  "scripts": {
+    "start": "webpack serve --mode development",
+    "build": "webpack --mode production",
+    "test": "jest"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "axios": "^0.21.1",
+    "react-router-dom": "^5.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.1.2",
+    "webpack": "^5.11.0",
+    "webpack-cli": "^4.3.1",
+    "webpack-dev-server": "^3.11.2",
+    "jest": "^26.6.0",
+    "ts-jest": "^26.5.0",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.2"
+  },
+  "keywords": [
+    "AI",
+    "document",
+    "search",
+    "summarization"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
