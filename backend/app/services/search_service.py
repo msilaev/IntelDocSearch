@@ -1,7 +1,7 @@
 from typing import List, Dict
 from fastapi import HTTPException
-from .utils.vector_db import VectorDB
-from .models.document import Document
+from app.utils.vector_db import VectorDB
+from app.models.document import Document
 
 class SearchService:
     def __init__(self, vector_db: VectorDB):

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from typing import List
-from ..services.search_service import search_documents
-from ..services.summarization_service import summarize_document
+from ..services.search_service import SearchService
+from ..services.summarization_service import SummarizationService
 
 router = APIRouter()
 
@@ -17,7 +17,7 @@ async def upload_document(file: UploadFile = File(...)):
 @router.post("/search/")
 async def search(query: str):
     try:
-        results = search_documents(query)
+        results = SearchService(query)
         return {"results": results}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -26,7 +26,7 @@ async def search(query: str):
 async def summarize(file: UploadFile = File(...)):
     try:
         content = await file.read()
-        summary = summarize_document(content)
+        summary = SummarizationService(content)
         return {"summary": summary}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
