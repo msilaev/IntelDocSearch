@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 
-const QueryInput = ({ onSearch }) => {
-    const [query, setQuery] = useState('');
+interface QueryInputProps {
+    onSearch: (query: string) => void;
+}
 
-    const handleInputChange = (event) => {
+
+const QueryInput: React.FC<QueryInputProps> = ({ onSearch }) => {
+    const [query, setQuery] = useState<string>('');
+
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         setQuery(event.target.value);
     };
 
@@ -15,13 +20,8 @@ const QueryInput = ({ onSearch }) => {
     };
 
     return (
-        <div className="query-input">
-            <input
-                type="text"
-                value={query}
-                onChange={handleInputChange}
-                placeholder="Enter your search query..."
-            />
+        <div>
+            <input type="text" value={query} onChange={handleInputChange} />
             <button onClick={handleSearch}>Search</button>
         </div>
     );
