@@ -1,9 +1,10 @@
+// filepath: /c:/Users/mikes/Documents/STUDY/GenAI/IntelDocSearch/intelligent-doc-search/frontend/webpack.config.js
 const path = require('path');
 
 module.exports = {
   entry: './src/index.tsx',
   output: {
-    filename: 'main.js',
+    filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
   resolve: {

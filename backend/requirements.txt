@@ -1,5 +1,4 @@
-Flask
-fastapi
+fastapi[all]
 uvicorn
 openai
 pinecone-client
@@ -10,3 +9,10 @@ python-dotenv
 requests
 transformers
 python-multipart
+sentence-transformers 
+pinecone-client
+python-dotenv
+PyMuPDF
+websockets
+wsproto
+pydantic
