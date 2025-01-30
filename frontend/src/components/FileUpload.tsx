@@ -1,27 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const FileUpload: React.FC<{ onFileUpload: (file: File) => void }> = ({ onFileUpload }) => {
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+interface FileUploadProps {
+    onFileSelect: (file: File) => void;
+}
 
+const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect }) => {
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
-            setSelectedFile(event.target.files[0]);
-        }
-    };
-
-    const handleUpload = () => {
-        if (selectedFile) {
-            onFileUpload(selectedFile);
-            setSelectedFile(null);
+            onFileSelect(event.target.files[0]);  // Immediately pass the file
         }
     };
 
     return (
         <div>
             <input type="file" accept=".pdf, .doc, .docx, .txt" onChange={handleFileChange} />
-            <button onClick={handleUpload} disabled={!selectedFile}>
-                Upload
-            </button>
         </div>
     );
 };

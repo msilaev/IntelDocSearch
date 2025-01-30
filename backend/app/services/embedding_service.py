@@ -53,8 +53,18 @@ class EmbeddingService:
 
 
     def search_embeddings(self, query: str, top_k: int = 5):
-        query_embedding = self.generate_embeddings(query)
-        return self.index.query(query_embedding, top_k=top_k)
+        try:
+            query_embedding = self.generate_embeddings(query)
+            #print(f"Query embedding: {query_embedding[:5]}...")  # Print first 5 values for debugging
+            results = self.index.query(vector=query_embedding.tolist(), top_k=top_k)  # Use keyword arguments
+            #print(f"Search results: {results}")
+            json_results = [{"id": res["id"], "score": res["score"]} for res in results["matches"]]
+            #input()
+            return json_results
+        excepSt Exception as e:
+            print(f"Failed to search embeddings: {e}")
+            raise
+
 
     
 # Example usage:

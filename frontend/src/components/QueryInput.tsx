@@ -1,29 +1,27 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState } from 'react';
 
 interface QueryInputProps {
     onSearch: (query: string) => void;
 }
 
+const QueryInput: React.FC<QueryInputProps> = ({ onSearch }) => {  // Add the missing opening curly brace
+    const [query, setQuery] = useState('');
 
-const QueryInput: React.FC<QueryInputProps> = ({ onSearch }) => {
-    const [query, setQuery] = useState<string>('');
-
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setQuery(event.target.value);
-    };
-
-    const handleSearch = () => {
-        if (query.trim()) {
-            onSearch(query);
-            setQuery('');
-        }
+    const handleSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
+        onSearch(query);
     };
 
     return (
-        <div>
-            <input type="text" value={query} onChange={handleInputChange} />
-            <button onClick={handleSearch}>Search</button>
-        </div>
+        <form onSubmit={handleSubmit}>
+            <input
+                type="text"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Enter search query"
+            />
+            <button type="submit">Search</button>
+        </form>
     );
 };
 

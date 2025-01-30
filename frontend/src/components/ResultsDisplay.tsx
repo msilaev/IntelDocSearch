@@ -1,7 +1,12 @@
 import React from 'react';
 
+interface Result {
+    id: string;
+    score: number;
+}
+
 interface ResultsDisplayProps {
-    results: string[];
+    results: Result[];
 }
 
 const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ results }) => {
@@ -10,7 +15,9 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ results }) => {
             <h2>Search Results</h2>
             <ul>
                 {results.map((result, index) => (
-                    <li key={index}>{result}</li>
+                    <li key={index}>
+                        <strong>ID:</strong> {result.id}, <strong>Score:</strong> {result.score}
+                    </li>
                 ))}
             </ul>
         </div>

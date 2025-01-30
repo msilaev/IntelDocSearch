@@ -1,5 +1,5 @@
-// filepath: /c:/Users/mikes/Documents/STUDY/GenAI/IntelDocSearch/intelligent-doc-search/frontend/webpack.config.js
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   entry: './src/index.tsx',
@@ -24,9 +24,16 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new Dotenv()
+  ],
   devServer: {
-    contentBase: path.join(__dirname, 'public'),
+    static: {
+      directory: path.join(__dirname, 'public'),
+    },
     compress: true,
-    port: 9000,
+    port: 3000,
+    hot: true,
+    open: true,
   },
 };
