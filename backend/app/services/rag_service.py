@@ -21,7 +21,7 @@ class RAGService:
     def retrieve_and_generate(self, query: str, top_k: int = 5) -> str:
         # Retrieve relevant documents
         results = self.embedding_service.search_embeddings(query, top_k=top_k)
-        print(results)
+        #print(results)
         
         # Retrieve the text content of the documents
         retrieved_texts = [self.retrieve_document_text(result['id']) for result in results]
