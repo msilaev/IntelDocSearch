@@ -12,6 +12,8 @@ const HomePage: React.FC = () => {
     const [results, setResults] = useState<Result[]>([]);
     const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
 
+    const [ragResponse, setRagResponse] = useState<string>('');
+
     // Store the selected file
     const [file, setFile] = useState<File | null>(null);
 
@@ -53,6 +55,15 @@ const HomePage: React.FC = () => {
         }
     };
 
+      // Handle RAG query
+      const handleRAG = async (query: string, top_k: number = 5) => {
+        try {
+            const response = await axios.post(`${backendUrl}/rag/`, { query, top_k });
+            setRagResponse(response.data.response);
+        } catch (error) {
+            console.error("Error in RAG:", error);
+        }
+    };
 
     return (
         <div>
@@ -63,6 +74,14 @@ const HomePage: React.FC = () => {
             </button>
             <QueryInput onSearch={handleSearch} />
             <ResultsDisplay results={results} />
+            <h2>RAG Query</h2>
+            <QueryInput onSearch={handleRAG} />
+            {ragResponse && (
+                <div>
+                    <h3>RAG Response</h3>
+                    <p>{ragResponse}</p>
+                </div>
+            )}
         </div>
     );
 };

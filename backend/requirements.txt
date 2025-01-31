@@ -1,6 +1,6 @@
 fastapi[all]
 uvicorn
-openai
+openai==0.28
 pinecone-client
 numpy
 pandas
@@ -16,3 +16,4 @@ PyMuPDF
 websockets
 wsproto
 pydantic
+sqlite3

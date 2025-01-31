@@ -2,6 +2,7 @@ from fastapi import APIRouter, UploadFile, File, HTTPException
 from pydantic import BaseModel
 
 from ..services.search_service import SearchService
+from ..services.rag_service import RAGService
 from ..services.summarization_service import SummarizationService
 from ..services.embedding_service import EmbeddingService
 import fitz
@@ -9,6 +10,8 @@ import os
 
 router = APIRouter()
 embedding_service = EmbeddingService()
+summarization_service = SummarizationService()
+
 
 class SearchRequest(BaseModel):
     query: str
@@ -43,8 +46,10 @@ async def upload_document(file: UploadFile = File(...)):
             content = await file.read()
             text = content.decode('utf-8')
         
+        print(text)
         embeddings = embedding_service.generate_embeddings(text)
-        embedding_service.store_embeddings(file.filename, embeddings)
+        print("embeddings")
+        embedding_service.store_embeddings(file.filename, embeddings, text)
         
         # Here you would typically save the document and process it
         return {"filename": file.filename, "content_type": file.content_type}
@@ -54,18 +59,36 @@ async def upload_document(file: UploadFile = File(...)):
 @router.post("/search/")
 async def search(request: SearchRequest):
     try:       
-        print("try") 
+        #print("try") 
         results = embedding_service.search_embeddings(request.query, top_k=request.top_k)
-        print("results")
+        #print("results")
         return {"results": results}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @router.post("/summarize/")
 async def summarize(file: UploadFile = File(...)):
     try:
         content = await file.read()
-        summary = SummarizationService(content)
+        text = content.decode('utf-8')
+        summary = summarization_service.summarize(text)
         return {"summary": summary}
     except Exception as e:
+        print(f"Error summarizing document: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+class RAGRequest(BaseModel):
+    query: str
+    top_k: int = 5  # Default value for top_k
+
+@router.post("/rag/")
+async def rag(request: RAGRequest):
+    rag_service = RAGService(embedding_service)
+    print("rag")
+    try:        
+        response = rag_service.retrieve_and_generate(request.query, top_k=request.top_k)
+        return {"response": response}
+    except Exception as e:
+        print(f"Error generating response: {e}")
         raise HTTPException(status_code=500, detail=str(e))
