@@ -34,6 +34,7 @@
   "proxy": "http://localhost:8000",
   "keywords": [
     "AI",
+    "RAG",
     "document",
     "search",
     "summarization"

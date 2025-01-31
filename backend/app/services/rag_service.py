@@ -29,7 +29,7 @@ class RAGService:
 
         # Combine retrieved texts
         combined_text = " ".join(retrieved_texts)
-        print(combined_text)
+        #print(combined_text)
 
         # Generate response based on combined text and user query using OpenAI API
         response = openai.ChatCompletion.create(
@@ -38,7 +38,10 @@ class RAGService:
                 {"role": "system", "content": "You are an AI assistant."},
                 {"role": "user", "content": f"Based on the following documents, answer the question: {query}\n\n{combined_text}"}
             ],
-            max_tokens=150,
+            max_tokens=1500,
             temperature=0.7
         )
-        return response.choices[0].message['content'].strip()
+
+        response_text = response.choices[0].message['content'].strip() 
+        print(response_text)
+        return response_text

@@ -12,8 +12,11 @@ router = APIRouter()
 embedding_service = EmbeddingService()
 summarization_service = SummarizationService()
 
-
 class SearchRequest(BaseModel):
+    query: str
+    top_k: int = 5  # Default value for top_k
+
+class RAGRequest(BaseModel):
     query: str
     top_k: int = 5  # Default value for top_k
 
@@ -25,12 +28,10 @@ def extract_text_from_pdf(file_path: str) -> str:
             text += page.get_text()
     return text
 
-
 @router.get("/")
 async def start():
     return f"Welcome to the Intelligent Document Search API!"
     
-
 @router.post("/upload/")
 async def upload_document(file: UploadFile = File(...)):
     try:
@@ -39,19 +40,18 @@ async def upload_document(file: UploadFile = File(...)):
         with open(file_location, "wb") as file_object:
             file_object.write(await file.read())
         
-        print("Uploaded file:", file_location)
+        #print("Uploaded file:", file_location)
         if file.filename.endswith('.pdf'):
             text = extract_text_from_pdf(file_location) 
         else:
             content = await file.read()
             text = content.decode('utf-8')
         
-        print(text)
+        #print(text)
         embeddings = embedding_service.generate_embeddings(text)
-        print("embeddings")
+        #print("embeddings")
         embedding_service.store_embeddings(file.filename, embeddings, text)
         
-        # Here you would typically save the document and process it
         return {"filename": file.filename, "content_type": file.content_type}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -66,7 +66,6 @@ async def search(request: SearchRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
 @router.post("/summarize/")
 async def summarize(file: UploadFile = File(...)):
     try:
@@ -78,14 +77,10 @@ async def summarize(file: UploadFile = File(...)):
         print(f"Error summarizing document: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-class RAGRequest(BaseModel):
-    query: str
-    top_k: int = 5  # Default value for top_k
-
 @router.post("/rag/")
 async def rag(request: RAGRequest):
     rag_service = RAGService(embedding_service)
-    print("rag")
+    #print("rag")
     try:        
         response = rag_service.retrieve_and_generate(request.query, top_k=request.top_k)
         return {"response": response}

@@ -9,9 +9,9 @@ interface Result {
     score: number;
 }
 const HomePage: React.FC = () => {
+    
     const [results, setResults] = useState<Result[]>([]);
     const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
-
     const [ragResponse, setRagResponse] = useState<string>('');
 
     // Store the selected file
@@ -55,8 +55,8 @@ const HomePage: React.FC = () => {
         }
     };
 
-      // Handle RAG query
-      const handleRAG = async (query: string, top_k: number = 5) => {
+    // Handle RAG query
+    const handleRAG = async (query: string, top_k: number = 5) => {
         try {
             const response = await axios.post(`${backendUrl}/rag/`, { query, top_k });
             setRagResponse(response.data.response);

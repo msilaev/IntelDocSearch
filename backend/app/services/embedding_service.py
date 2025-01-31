@@ -50,14 +50,12 @@ class EmbeddingService:
         conn.close()
 
     def generate_embeddings(self, text: str):
-        embeddings = self.model.encode(text)
-        print(text)
-        print(f"Generated embeddings: {embeddings[:5]}...")  # Print first 5 values for debugging
+        embeddings = self.model.encode(text)        
         return embeddings
         
     def store_embeddings(self, doc_id: str, embeddings: np.ndarray, text: str):
         try:
-            print(f"Storing embeddings for document ID: {doc_id}")
+            #print(f"Storing embeddings for document ID: {doc_id}")
             embeddings_list = embeddings.astype(np.float32).flatten().tolist()  # Fix typo here
 
             #   Ensure correct format for upsert
@@ -74,7 +72,6 @@ class EmbeddingService:
         except Exception as e:
             print(f"Failed to store embeddings: {e}")
 
-
     def get_document_text(self, doc_id: str) -> str:
         try:
             conn = sqlite3.connect(self.db_path)
@@ -89,7 +86,6 @@ class EmbeddingService:
         except Exception as e:
             print(f"Failed to retrieve document text: {e}")
             return ""
-
 
     def search_embeddings(self, query: str, top_k: int = 5):
         try:
